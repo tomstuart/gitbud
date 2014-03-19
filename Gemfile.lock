@@ -47,4 +47,5 @@ PLATFORMS
 DEPENDENCIES
   capybara
   cucumber
+  rack
   rspec (~> 3.0.0.beta)
