@@ -5,6 +5,8 @@ When(/^I enter the (.*) URL of a public repository$/) do |transport|
       'git://github.com/git/git.git'
     when 'HTTPS'
       'https://github.com/git/git.git'
+    when 'SSH'
+      'git@github.com:git/git.git'
     end
 
   visit '/'
