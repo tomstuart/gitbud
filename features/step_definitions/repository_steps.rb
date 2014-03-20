@@ -1,6 +1,14 @@
-When(/^I enter the Git URL of a public repository$/) do
+When(/^I enter the (.*) URL of a public repository$/) do |transport|
+  url =
+    case transport
+    when 'Git'
+      'git://github.com/git/git.git'
+    when 'HTTPS'
+      'https://github.com/git/git.git'
+    end
+
   visit '/'
-  fill_in 'Repository URL', with: 'git://github.com/git/git.git'
+  fill_in 'Repository URL', with: url
   click_on 'View repository'
 end
 

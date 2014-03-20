@@ -6,3 +6,7 @@ Feature: Viewing remote repositories
   Scenario: View a public repository with a Git URL
     When I enter the Git URL of a public repository
     Then I see a list of its branches
+
+  Scenario: View a public repository with an HTTPS URL
+    When I enter the HTTPS URL of a public repository
+    Then I see a list of its branches
