@@ -31,13 +31,12 @@ map '/view' do
 
     Dir.mktmpdir do |directory|
       repository = Rugged::Repository.init_at(directory)
+      remote = Rugged::Remote.new(repository, url)
 
-      Rugged::Remote.new(repository, url).connect(:fetch) do |remote|
-        branch_names = remote.ls.
-          map { |reference| reference[:name] }.
-          select { |name| name.start_with?('refs/heads/') }.
-          map { |name| name.slice(%r{(?<=\Arefs/heads/).*\z}) }
-      end
+      branch_names = remote.ls.
+        map { |reference| reference[:name] }.
+        select { |name| name.start_with?('refs/heads/') }.
+        map { |name| name.slice(%r{(?<=\Arefs/heads/).*\z}) }
     end
 
     Rack::Response.new do |response|
