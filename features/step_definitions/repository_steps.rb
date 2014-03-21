@@ -1,3 +1,15 @@
+require 'rugged'
+
+Given(/^a public repository hosted by GitBud$/) do
+  repository = Rugged::Repository.init_at(File.expand_path('../../../repositories/hello_world.git', __FILE__), :bare)
+  blob = "puts 'Hello, world!'\n"
+  oid = repository.write(blob, :blob)
+  index = Rugged::Index.new
+  index.add(path: 'hello_world.rb', oid: oid)
+  tree = index.write_tree(repository)
+  commit = Rugged::Commit.create(repository, message: 'Initial commit', parents: [], tree: tree, update_ref: 'HEAD')
+end
+
 When(/^I enter the (.*) URL of a public repository$/) do |transport|
   url =
     case transport
