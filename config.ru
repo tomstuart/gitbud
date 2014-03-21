@@ -1,3 +1,4 @@
+require 'grack'
 require 'rack/content_type'
 require 'rack/lint'
 require 'rack/request'
@@ -48,4 +49,8 @@ map '/view' do
       response.write '</ul>'
     end
   }
+end
+
+map '/repositories' do
+  run Grack::App.new(project_root: File.expand_path('../repositories', __FILE__), adapter: Grack::GitAdapter)
 end
