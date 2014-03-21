@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'rugged'
 require 'tmpdir'
 
@@ -46,4 +47,7 @@ end
 Then(/^I have a local copy$/) do
   expect(File.directory?(File.join(@directory, 'hello_world'))).to be_truthy
   expect(File.read(File.join(@directory, 'hello_world', 'hello_world.rb'))).to eq "puts 'Hello, world!'\n"
+
+  FileUtils.remove_entry(File.expand_path('../../../repositories/hello_world.git', __FILE__))
+  FileUtils.remove_entry(@directory)
 end
