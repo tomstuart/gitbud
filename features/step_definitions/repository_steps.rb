@@ -42,3 +42,8 @@ Then(/^I see a list of its branches$/) do
   branch_names = all('.branches > *').map(&:text)
   expect(branch_names).to contain_exactly 'maint', 'master', 'next', 'pu', 'todo'
 end
+
+Then(/^I have a local copy$/) do
+  expect(File.directory?(File.join(@directory, 'hello_world'))).to be_truthy
+  expect(File.read(File.join(@directory, 'hello_world', 'hello_world.rb'))).to eq "puts 'Hello, world!'\n"
+end
