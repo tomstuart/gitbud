@@ -31,7 +31,7 @@ When(/^I clone the repository URL on the command line$/) do
   server = Capybara::Server.new(Capybara.app).boot
 
   Dir.chdir(@directory) do
-    system 'git', 'clone', "http://#{server.host}:#{server.port}/repositories/hello_world.git"
+    system 'git', 'clone', '--quiet', "http://#{server.host}:#{server.port}/repositories/hello_world.git"
   end
 end
 
