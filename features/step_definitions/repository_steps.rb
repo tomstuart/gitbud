@@ -28,15 +28,11 @@ end
 
 When(/^I clone the repository URL on the command line$/) do
   @directory = Dir.mktmpdir
-  pid = Process.fork { Rack::Handler.default.run(Capybara.app, Host: 'localhost', Port: 8888) }
-
-  sleep 1 # wait for WEBrick to boot
+  server = Capybara::Server.new(Capybara.app).boot
 
   Dir.chdir(@directory) do
-    system 'git', 'clone', 'http://localhost:8888/repositories/hello_world.git'
+    system 'git', 'clone', "http://#{server.host}:#{server.port}/repositories/hello_world.git"
   end
-
-  Process.kill 'SIGTERM', pid
 end
 
 Then(/^I see a list of its branches$/) do
