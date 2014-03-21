@@ -1,4 +1,5 @@
 require 'rugged'
+require 'tmpdir'
 
 Given(/^a public repository hosted by GitBud$/) do
   repository = Rugged::Repository.init_at(File.expand_path('../../../repositories/hello_world.git', __FILE__), :bare)
@@ -22,6 +23,19 @@ When(/^I enter the (.*) URL of a public repository$/) do |transport|
   visit '/'
   fill_in 'Repository URL', with: url
   click_on 'View repository'
+end
+
+When(/^I clone the repository URL on the command line$/) do
+  @directory = Dir.mktmpdir
+  pid = Process.fork { Rack::Handler.default.run(Capybara.app, Host: 'localhost', Port: 8888) }
+
+  sleep 1 # wait for WEBrick to boot
+
+  Dir.chdir(@directory) do
+    system 'git', 'clone', 'http://localhost:8888/repositories/hello_world.git'
+  end
+
+  Process.kill 'SIGTERM', pid
 end
 
 Then(/^I see a list of its branches$/) do
